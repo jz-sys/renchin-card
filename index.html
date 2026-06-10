@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人數位名片</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body class="bg-slate-100 flex flex-col justify-center items-center min-h-screen p-4">
+
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm border border-slate-200 relative overflow-hidden">
+        
+        <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r bg-emerald-500"></div>
+
+        <div class="relative z-10 text-right text-xs text-emerald-100 mb-4 h-6" id="visitor-box">
+            <span id="visitor-name">訪客</span> 正在瀏覽...
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center mt-2">
+            <img src="https://test.apple-line.com/RenchinCard/icon.png" alt="Avatar" class="w-24 h-24 rounded-full border-4 border-white shadow-md object-cover" id="my-avatar">
+            <h1 class="text-xl font-bold text-slate-800 mt-3" id="my-name">你的名字 / 品牌名稱</h1>
+            <p class="text-sm text-emerald-600 font-medium" id="my-title">社群創作者 / 數位內容規劃</p>
+            <p class="text-xs text-slate-500 text-center mt-2 px-4 leading-relaxed" id="my-bio">
+                這裡寫下一句你的核心理念或簡短介紹。例如：「用三分鐘的時間，帶你探索網路世界的冷知識與有趣角落。」
+            </p>
+        </div>
+
+        <div class="mt-6 space-y-2">
+            <a href="https://instagram.com" target="_blank" class="flex items-center justify-center gap-2 w-full py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-xl text-sm font-medium transition">
+                📷 追蹤 Instagram
+            </a>
+            <a href="https://threads.net" target="_blank" class="flex items-center justify-center gap-2 w-full py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-xl text-sm font-medium transition">
+                🧵 關注 Threads
+            </a>
+        </div>
+
+        <hr class="my-5 border-slate-100">
+
+        <div class="grid grid-cols-2 gap-2">
+            <button id="share-btn" class="flex items-center justify-center gap-1 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-medium shadow-sm transition">
+                🔗 分享名片給好友
+            </button>
+            <button id="close-btn" class="flex items-center justify-center gap-1 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-xl text-xs font-medium transition">
+                關閉視窗
+            </button>
+        </div>
+    </div>
+
+    <div class="text-center text-[10px] text-slate-400 mt-4">
+        Powered by LINE
+    </div>
+
+    <script>
+        // 在這裡填入你在 LINE Developers 後台申請到的 LIFF ID
+        const MY_LIFF_ID = "2010359676-IbNfBMDD"; 
+
+        window.onload = function() {
+            initializeLiff();
+        };
+
+        // 初始化 LIFF
+        function initializeLiff() {
+            liff.init({ liffId: MY_LIFF_ID })
+                .then(() => {
+                    if (liff.isLoggedIn()) {
+                        handleIncomingUser();
+                    } else {
+                        // 如果是在外部瀏覽器打開，可以選擇自動引導登入
+                        liff.login();
+                    }
+                    setupButtonEvents();
+                })
+                .catch((err) => {
+                    console.error("LIFF 初始化失敗", err);
+                });
+        }
+
+        // 處理觀看名片的使用者資料
+        function handleIncomingUser() {
+            liff.getProfile()
+                .then(profile => {
+                    // 抓取「點開名片的人」的名字，顯示在名片右上角，增加互動感！
+                    document.getElementById("visitor-name").innerText = `👋 ${profile.displayName}`;
+                })
+                .catch(err => console.error("無法取得訪客資料", err));
+        }
+
+        // 設定按鈕事件
+        function setupButtonEvents() {
+            const shareBtn = document.getElementById("share-btn");
+            const closeBtn = document.getElementById("close-btn");
+
+            // 1. 一鍵分享名片功能 (Share Target Picker)
+            shareBtn.onclick = function() {
+                if (!liff.isApiAvailable('shareTargetPicker')) {
+                    alert("目前環境不支援分享功能");
+                    return;
+                }
+
+                // 當用戶點擊分享時，發送精心設計的圖文卡片訊息給他的朋友
+                liff.shareTargetPicker([
+                    {
+                        type: "flex",
+                        altText: "您收到了一張數位名片！",
+                        contents: {
+                            type: "bubble",
+                            hero: {
+                                type: "image",
+                                url: "https://test.apple-line.com/RenchinCard/icon.png", // 換成你的名片封面圖
+                                size: "full",
+                                aspectRatio: "20:13",
+                                aspectMode: "cover"
+                            },
+                            body: {
+                                type: "box",
+                                layout: "vertical",
+                                contents: [
+                                    { type: "text", text: "你的名字 / 品牌名稱", weight: "bold", size: "xl" },
+                                    { type: "text", text: "歡迎點擊下方連結查看我的數位名片與最新動態！", size: "sm", color: "#666666", wrap: true, margin: "md" }
+                                ]
+                            },
+                            footer: {
+                                type: "box",
+                                layout: "vertical",
+                                spacing: "sm",
+                                contents: [
+                                    {
+                                        type: "button",
+                                        style: "primary",
+                                        color: "#10b981",
+                                        action: {
+                                            type: "uri",
+                                            label: "查看數位名片",
+                                            uri: `https://liff.line.me/${MY_LIFF_ID}` // 點擊後會再次打開這個 LIFF
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ])
+                .then(res => {
+                    if (res) {
+                        console.log("名片已成功分享！");
+                    } else {
+                        console.log("使用者取消了分享");
+                    }
+                })
+                .catch(err => console.error("分享失敗", err));
+            };
+
+            // 2. 關閉視窗功能
+            if (liff.isInClient()) {
+                closeBtn.onclick = function() {
+                    liff.closeWindow();
+                };
+            } else {
+                // 如果是在一般瀏覽器打開，關閉按鈕就隱藏或提示
+                closeBtn.classList.add("opacity-50", "cursor-not-allowed");
+                closeBtn.innerText = "一般網頁環境";
+            }
+        }
+    </script>
+</body>
+</html>
