@@ -76,6 +76,7 @@
             document.getElementById('render-name').innerText = cardData.profile.name;
             document.getElementById('render-title').innerText = cardData.profile.title;
             document.getElementById('render-bio').innerText = cardData.profile.bio;
+            document.getElementById('btn-share').innerText = cardData.buttons.htmlShareBtn;
 
             const linksContainer = document.getElementById('render-links');
             linksContainer.innerHTML = '';
@@ -178,7 +179,7 @@
                                                 "color": "#3f3f46",
                                                 "action": {
                                                     "type": "uri",
-                                                    "label": cardData.profile.inv,
+                                                    "label": cardData.buttons.flexOpenBtn,
                                                     "uri": MY_LIFF_URL
                                                 }
                                             }
