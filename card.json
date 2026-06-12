@@ -20,6 +20,7 @@
   ],
   "buttons": {
     "htmlShareBtn": "分享給朋友",
+    "htmlCloseBtn": "慢走不送",
     "flexOpenBtn": "都給了就看一下"
   }
 }
