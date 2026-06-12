@@ -47,6 +47,8 @@
                     關閉視窗
                 </button>
             </div>
+            <div id="render-footer" class="mt-3 text-center text-[10px] text-zinc-400 font-medium tracking-wide">
+            </div>
         </div>
     </div>
 
@@ -78,6 +80,7 @@
             document.getElementById('render-bio').innerText = cardData.profile.bio;
             document.getElementById('btn-share').innerText = cardData.buttons.htmlShareBtn;
             document.getElementById('btn-close').innerText = cardData.buttons.htmlCloseBtn;
+            document.getElementById('render-footer').innerText = cardData.footerText;
 
             const linksContainer = document.getElementById('render-links');
             linksContainer.innerHTML = '';
