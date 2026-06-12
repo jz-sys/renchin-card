@@ -1,0 +1,79 @@
+{
+  "type": "bubble",
+  "size": "mega",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "paddingAll": "0px",
+    "contents": [
+      {
+        "type": "image",
+        "url": "https://placehold.co/800x1200/FFD1DC/3f3f46?text=Background",
+        "size": "full",
+        "aspectMode": "cover",
+        "aspectRatio": "3:4"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "position": "absolute",
+        "width": "100%",
+        "height": "100%",
+        "backgroundColor": "#FFFDF7DD",
+        "paddingAll": "25px",
+        "alignItems": "center",
+        "contents": [
+          {
+            "type": "image",
+            "url": "https://placehold.co/800x800/FFE4B5/3f3f46?text=Avatar",
+            "size": "xl",
+            "aspectMode": "cover",
+            "margin": "xl"
+          },
+          {
+            "type": "text",
+            "text": "不想上班的創作者",
+            "weight": "bold",
+            "size": "xl",
+            "color": "#3f3f46",
+            "margin": "xl"
+          },
+          {
+            "type": "text",
+            "text": "厭世系 / 數位貼圖設計",
+            "size": "sm",
+            "color": "#FF6B6B",
+            "weight": "bold",
+            "margin": "sm"
+          },
+          {
+            "type": "text",
+            "text": "這是我逼不得已才做的名片，裡面有一些沒什麼用的連結，通常不太回訊息。",
+            "size": "sm",
+            "color": "#71717a",
+            "wrap": true,
+            "margin": "xl",
+            "align": "center"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "margin": "xxl",
+            "contents": [
+              {
+                "type": "button",
+                "style": "primary",
+                "color": "#3f3f46",
+                "action": {
+                  "type": "uri",
+                  "label": "勉為其難看一下",
+                  "uri": "https://liff.line.me/2010359676-IbNfBMDD"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

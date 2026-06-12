@@ -61,7 +61,7 @@
         // 1. 初始化：讀取同一個資料夾底下的 card.json
         window.onload = function() {
             // 如果你在本機測試出現 CORS 錯誤，或一直抓不到檔案，可以把 './card.json' 改成你的 GitHub 絕對網址
-            fetch('https://jz-sys.github.io/renchin-card/renchincard.json')
+            fetch('card.json')
                 .then(response => {
                     if (!response.ok) throw new Error("檔案路徑錯誤或找不到檔案");
                     return response.json(); 
