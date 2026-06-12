@@ -26,26 +26,44 @@
     "tabProducts": "📦 我的作品"
   },
   "footerText": "© 2026 版權所有 | Designed by Renchin 厭世遜咖",
-  "products": [
+"portfolioGroups": [
     {
-      "imageUrl": "https://placehold.co/400x400/FFD1DC/3f3f46?text=Item+1",
-      "title": "社畜專用馬克杯",
-      "desc": "NT$ 350 / 裝水特別好喝"
+      "sectionTitle": "🛒 實體商品區 (點擊購買)",
+      "items": [
+        {
+          "type": "link",
+          "url": "https://store.line.me/",
+          "imageUrl": "https://placehold.co/400x400/FFD1DC/3f3f46?text=Item+1",
+          "title": "社畜專用馬克杯",
+          "desc": "NT$ 350 / 裝水特別好喝"
+        },
+        {
+          "type": "link",
+          "url": "https://store.line.me/",
+          "imageUrl": "https://placehold.co/400x400/FFE4B5/3f3f46?text=Item+2",
+          "title": "不想上班防水貼紙",
+          "desc": "NT$ 120 / 點此看詳情"
+        }
+      ]
     },
     {
-      "imageUrl": "https://placehold.co/400x400/FFE4B5/3f3f46?text=Item+2",
-      "title": "不想上班防水貼紙",
-      "desc": "NT$ 120 / 一包共 10 張"
-    },
-    {
-      "imageUrl": "https://placehold.co/400x400/E9D5FF/3f3f46?text=Item+3",
-      "title": "眼神死帆布袋",
-      "desc": "NT$ 450 / 裝得下你的無奈"
-    },
-    {
-      "imageUrl": "https://placehold.co/400x400/D1FAE5/3f3f46?text=Item+4",
-      "title": "客製化厭世頭像",
-      "desc": "私訊報價 / 幫你畫出靈魂"
+      "sectionTitle": "🎨 插畫作品區 (純展示)",
+      "items": [
+        {
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://placehold.co/400x400/E9D5FF/3f3f46?text=Art+1",
+          "title": "眼神死自畫像",
+          "desc": "2026 / 壓克力顏料"
+        },
+        {
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://placehold.co/400x400/D1FAE5/3f3f46?text=Art+2",
+          "title": "老闆的凝視",
+          "desc": "2025 / 電繪"
+        }
+      ]
     }
   ]
 }
