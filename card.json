@@ -7,7 +7,6 @@
     "name": "厭世的創作者",
     "title": "硬體裝修 / 軟體設計規劃",
     "bio": "逼不得已做的名片，裡面都是沒啥用的連結，隨便逛逛；好友隨意，反正訊息看心情回。"
-    "inv": "都給了就看一下"
   },
   "links": [
     {
@@ -18,5 +17,9 @@
       "title": "🛒 貼圖商店 隨便逛逛",
       "url": "https://store.line.me/stickershop/author/5937621/zh-Hant?lang=zh-Hant&utm_source=gnsh_staut"
     }
-  ]
+  ],
+  "buttons": {
+    "htmlShareBtn": "分享給朋友",
+    "flexOpenBtn": "都給了就看一下"
+  }
 }
