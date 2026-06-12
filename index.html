@@ -8,7 +8,6 @@
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     
     <style>
-        /* 手繪感不規則邊框設計 */
         .sketch-border {
             border: 3px solid #3f3f46;
             border-radius: 2px 255px 3px 25px / 255px 5px 225px 3px;
@@ -52,15 +51,10 @@
     </div>
 
     <script>
-        // ⚠️ 記得把這裡換成你的 LIFF ID
         const MY_LIFF_ID = "2010359676-IbNfBMDD"; 
         const MY_LIFF_URL = `https://liff.line.me/${MY_LIFF_ID}`;
-
         let cardData = {};
-
-        // 1. 初始化：讀取同一個資料夾底下的 card.json
         window.onload = function() {
-            // 如果你在本機測試出現 CORS 錯誤，或一直抓不到檔案，可以把 './card.json' 改成你的 GitHub 絕對網址
             fetch('card.json')
                 .then(response => {
                     if (!response.ok) throw new Error("檔案路徑錯誤或找不到檔案");
@@ -76,8 +70,6 @@
                     document.getElementById('render-bio').innerText = "無法載入名片資料，請確認 card.json 存在且格式正確。";
                 });
         };
-
-        // 2. 渲染畫面
         function renderHtmlCard() {
             document.getElementById('render-bg').style.backgroundImage = `url('${cardData.images.backgroundUrl}')`;
             document.getElementById('render-avatar').style.backgroundImage = `url('${cardData.images.avatarUrl}')`;
@@ -86,7 +78,7 @@
             document.getElementById('render-bio').innerText = cardData.profile.bio;
 
             const linksContainer = document.getElementById('render-links');
-            linksContainer.innerHTML = ''; // 清空預設內容
+            linksContainer.innerHTML = '';
             cardData.links.forEach(link => {
                 const a = document.createElement('a');
                 a.href = link.url;
@@ -96,8 +88,6 @@
                 linksContainer.appendChild(a);
             });
         }
-
-        // 3. LIFF 與 Flex Message 發送
         function initializeLiff() {
             liff.init({ liffId: MY_LIFF_ID }).then(() => {
                 if (!liff.isLoggedIn()) liff.login();
