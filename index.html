@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINE 名片</title>
+    <title>遜咖名片</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    
     <style>
         .sketch-border {
             border: 3px solid #3f3f46;
@@ -21,69 +20,94 @@
 <body class="bg-[#FFFDF7] flex flex-col items-center justify-start min-h-screen p-4 font-sans text-zinc-800">
 
     <div class="sketch-border sketch-shadow w-full max-w-sm relative flex flex-col h-[85vh] max-h-[700px] overflow-hidden">
-        
         <div id="render-bg" class="absolute inset-0 bg-cover bg-center z-0"></div>
-        
         <div class="absolute inset-0 bg-[#FFFDF7]/85 z-10"></div>
-
-        <div class="p-5 flex-1 overflow-y-auto relative z-20">
-            <div class="flex flex-col items-center mt-6">
-                <div id="render-avatar" class="w-24 h-24 sketch-border bg-cover bg-center shadow-md bg-white"></div>
-                
+        <div class="p-5 flex-1 overflow-y-auto relative z-20 flex flex-col">
+            <div class="flex justify-center space-x-2 mb-5 shrink-0">
+                <button id="btn-tab-profile" onclick="switchPage('profile')" class="flex-1 py-1.5 sketch-border bg-zinc-800 text-white font-bold text-sm transition-all">
+                </button>
+                <button id="btn-tab-products" onclick="switchPage('products')" class="flex-1 py-1.5 sketch-border bg-white text-zinc-800 font-bold text-sm transition-all">
+                </button>
+            </div>
+            <div id="page-profile" class="flex flex-col items-center">
+                <div id="render-avatar" class="w-24 h-24 sketch-border bg-cover bg-center shadow-md bg-white shrink-0"></div>
                 <h1 id="render-name" class="text-xl font-black mt-4 text-zinc-800"></h1>
                 <p id="render-title" class="text-sm font-bold mt-1 text-[#FF6B6B]"></p>
                 <p id="render-bio" class="text-xs text-zinc-600 text-center mt-3 px-3 leading-relaxed">載入中...</p>
+                <div id="render-links" class="mt-6 space-y-3 w-full"></div>
             </div>
-
-            <div id="render-links" class="mt-6 space-y-3"></div>
+            <div id="page-products" class="hidden grid-cols-2 gap-3 pb-2 w-full">
+            </div>
         </div>
-
         <div class="p-4 border-t-3 border-zinc-800 bg-[#FFFDF7] relative z-20 shrink-0">
             <div class="grid grid-cols-2 gap-3">
-                <button id="btn-share" class="py-2.5 sketch-border sketch-shadow font-bold text-sm bg-zinc-800 text-white active:translate-y-1 active:shadow-none transition-all">
-                    分享這張名片
-                </button>
-                <button id="btn-close" class="py-2.5 bg-white sketch-border font-bold text-sm active:translate-y-1 transition-all">
-                    關閉視窗
-                </button>
+                <button id="btn-share" class="py-2.5 sketch-border sketch-shadow font-bold text-sm bg-zinc-800 text-white active:translate-y-1 active:shadow-none transition-all"></button>
+                <button id="btn-close" class="py-2.5 bg-white sketch-border font-bold text-sm active:translate-y-1 transition-all"></button>
             </div>
-        </div>
-        <div id="render-footer" class="mt-3 text-center text-[10px] text-zinc-400 font-medium tracking-wide">
+            <div id="render-footer" class="mt-3 text-center text-[10px] text-zinc-400 font-medium tracking-wide"></div>
         </div>
     </div>
-
     <script>
         const MY_LIFF_ID = "2010359676-IbNfBMDD"; 
         const MY_LIFF_URL = `https://liff.line.me/${MY_LIFF_ID}`;
+
         let cardData = {};
+
         window.onload = function() {
             fetch('card.json')
-                .then(response => {
-                    if (!response.ok) throw new Error("檔案路徑錯誤或找不到檔案");
-                    return response.json(); 
+                .then(res => {
+                    if (!res.ok) throw new Error("找不到檔案");
+                    return res.json(); 
                 })
                 .then(data => {
                     cardData = data; 
                     renderHtmlCard();
                     initializeLiff();
                 })
-                .catch(error => {
-                    console.error("讀取資料失敗：", error);
-                    document.getElementById('render-bio').innerText = "無法載入名片資料，請確認 card.json 存在且格式正確。";
+                .catch(err => {
+                    document.getElementById('render-bio').innerText = "無法載入資料，請確認 card.json";
                 });
         };
+        function switchPage(page) {
+            const pageProfile = document.getElementById('page-profile');
+            const pageProducts = document.getElementById('page-products');
+            const btnProfile = document.getElementById('btn-tab-profile');
+            const btnProducts = document.getElementById('btn-tab-products');
+
+            if (page === 'profile') {
+                pageProfile.classList.remove('hidden');
+                pageProfile.classList.add('flex');
+                pageProducts.classList.add('hidden');
+                pageProducts.classList.remove('grid');
+                btnProfile.classList.replace('bg-white', 'bg-zinc-800');
+                btnProfile.classList.replace('text-zinc-800', 'text-white');
+                btnProducts.classList.replace('bg-zinc-800', 'bg-white');
+                btnProducts.classList.replace('text-white', 'text-zinc-800');
+            } else {
+                pageProfile.classList.add('hidden');
+                pageProfile.classList.remove('flex');
+                pageProducts.classList.remove('hidden');
+                pageProducts.classList.add('grid');
+                btnProducts.classList.replace('bg-white', 'bg-zinc-800');
+                btnProducts.classList.replace('text-zinc-800', 'text-white');
+                btnProfile.classList.replace('bg-zinc-800', 'bg-white');
+                btnProfile.classList.replace('text-white', 'text-zinc-800');
+            }
+        }
+
         function renderHtmlCard() {
             document.getElementById('render-bg').style.backgroundImage = `url('${cardData.images.backgroundUrl}')`;
             document.getElementById('render-avatar').style.backgroundImage = `url('${cardData.images.avatarUrl}')`;
             document.getElementById('render-name').innerText = cardData.profile.name;
             document.getElementById('render-title').innerText = cardData.profile.title;
             document.getElementById('render-bio').innerText = cardData.profile.bio;
+            document.getElementById('btn-tab-profile').innerText = cardData.buttons.tabProfile;
+            document.getElementById('btn-tab-products').innerText = cardData.buttons.tabProducts;
             document.getElementById('btn-share').innerText = cardData.buttons.htmlShareBtn;
             document.getElementById('btn-close').innerText = cardData.buttons.htmlCloseBtn;
             document.getElementById('render-footer').innerText = cardData.footerText;
-
             const linksContainer = document.getElementById('render-links');
-            linksContainer.innerHTML = '';
+            linksContainer.innerHTML = ''; 
             cardData.links.forEach(link => {
                 const a = document.createElement('a');
                 a.href = link.url;
@@ -92,23 +116,34 @@
                 a.innerText = link.title;
                 linksContainer.appendChild(a);
             });
+            const productsContainer = document.getElementById('page-products');
+            productsContainer.innerHTML = ''; 
+            if (cardData.products) {
+                cardData.products.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = "flex flex-col sketch-border bg-white/90 p-2 h-full";
+                    div.innerHTML = `
+                        <!-- 商品圖片：正方形裁切 -->
+                        <div class="w-full aspect-square bg-cover bg-center sketch-border mb-2" style="background-image: url('${item.imageUrl}')"></div>
+                        <!-- 第一行：品項名 (文字過長自動...省略) -->
+                        <h3 class="font-bold text-[13px] text-zinc-800 leading-tight truncate">${item.title}</h3>
+                        <!-- 第二行：價格與說明 -->
+                        <p class="text-[11px] text-[#FF6B6B] font-bold mt-1 truncate">${item.desc}</p>
+                    `;
+                    productsContainer.appendChild(div);
+                });
+            }
         }
         function initializeLiff() {
             liff.init({ liffId: MY_LIFF_ID }).then(() => {
                 if (!liff.isLoggedIn()) liff.login();
-                
                 document.getElementById('btn-share').onclick = function() {
-                    if (liff.isApiAvailable('shareTargetPicker')) {
-                        shareDynamicFlexMessage();
-                    } else {
-                        alert("請在 LINE App 中開啟才能分享！");
-                    }
+                    if (liff.isApiAvailable('shareTargetPicker')) shareDynamicFlexMessage();
                 };
-
                 document.getElementById('btn-close').onclick = function() {
                     if (liff.isInClient()) liff.closeWindow();
                 };
-            }).catch(err => console.error("LIFF 初始化失敗", err));
+            });
         }
 
         function shareDynamicFlexMessage() {
@@ -123,69 +158,24 @@
                         "layout": "vertical",
                         "paddingAll": "0px",
                         "contents": [
-                            {
-                                "type": "image",
-                                "url": cardData.images.backgroundUrl,
-                                "size": "full",
-                                "aspectMode": "cover",
-                                "aspectRatio": "3:4"
-                            },
+                            { "type": "image", "url": cardData.images.backgroundUrl, "size": "full", "aspectMode": "cover", "aspectRatio": "3:4" },
                             {
                                 "type": "box",
                                 "layout": "vertical",
                                 "position": "absolute",
-                                "width": "100%",
-                                "height": "100%",
-                                "backgroundColor": "#FFFDF7DD",
-                                "paddingAll": "25px",
-                                "alignItems": "center",
+                                "width": "100%", "height": "100%", "backgroundColor": "#FFFDF7DD",
+                                "paddingAll": "25px", "alignItems": "center",
                                 "contents": [
+                                    { "type": "image", "url": cardData.images.avatarUrl, "size": "xl", "aspectMode": "cover", "margin": "xl" },
+                                    { "type": "text", "text": cardData.profile.name, "weight": "bold", "size": "xl", "color": "#3f3f46", "margin": "xl" },
+                                    { "type": "text", "text": cardData.profile.title, "size": "sm", "color": "#FF6B6B", "weight": "bold", "margin": "sm" },
+                                    { "type": "text", "text": cardData.profile.bio, "size": "sm", "color": "#71717a", "wrap": true, "margin": "xl", "align": "center" },
                                     {
-                                        "type": "image",
-                                        "url": cardData.images.avatarUrl,
-                                        "size": "xl",
-                                        "aspectMode": "cover",
-                                        "margin": "xl"
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": cardData.profile.name,
-                                        "weight": "bold",
-                                        "size": "xl",
-                                        "color": "#3f3f46",
-                                        "margin": "xl"
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": cardData.profile.title,
-                                        "size": "sm",
-                                        "color": "#FF6B6B",
-                                        "weight": "bold",
-                                        "margin": "sm"
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": cardData.profile.bio,
-                                        "size": "sm",
-                                        "color": "#71717a",
-                                        "wrap": true,
-                                        "margin": "xl",
-                                        "align": "center"
-                                    },
-                                    {
-                                        "type": "box",
-                                        "layout": "vertical",
-                                        "margin": "xxl",
+                                        "type": "box", "layout": "vertical", "margin": "xxl",
                                         "contents": [
                                             {
-                                                "type": "button",
-                                                "style": "primary",
-                                                "color": "#3f3f46",
-                                                "action": {
-                                                    "type": "uri",
-                                                    "label": cardData.buttons.flexOpenBtn,
-                                                    "uri": MY_LIFF_URL
-                                                }
+                                                "type": "button", "style": "primary", "color": "#3f3f46",
+                                                "action": { "type": "uri", "label": cardData.buttons.flexOpenBtn, "uri": MY_LIFF_URL }
                                             }
                                         ]
                                     }
@@ -195,10 +185,7 @@
                     }
                 }
             };
-
-            liff.shareTargetPicker([ flexJson ])
-                .then((res) => { if (res) console.log("發送成功"); })
-                .catch(err => alert("發送失敗: " + err));
+            liff.shareTargetPicker([ flexJson ]).then(res => { if (res) console.log("發送成功"); });
         }
     </script>
 </body>
