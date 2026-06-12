@@ -1,168 +1,210 @@
-<script>
-    const MY_LIFF_ID = "2010359676-IbNfBMDD"; 
-    const MY_LIFF_URL = `https://liff.line.me/${MY_LIFF_ID}`;
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINE 名片</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    
+    <style>
+        /* 手繪感不規則邊框設計 */
+        .sketch-border {
+            border: 3px solid #3f3f46;
+            border-radius: 2px 255px 3px 25px / 255px 5px 225px 3px;
+        }
+        .sketch-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(63, 63, 70, 1);
+        }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-[#FFFDF7] flex flex-col items-center justify-start min-h-screen p-4 font-sans text-zinc-800">
 
-    // 宣告一個全域變數來準備裝 JSON 的資料
-    let cardData = {};
+    <div class="sketch-border sketch-shadow w-full max-w-sm relative flex flex-col h-[85vh] max-h-[700px] overflow-hidden">
+        
+        <div id="render-bg" class="absolute inset-0 bg-cover bg-center z-0"></div>
+        
+        <div class="absolute inset-0 bg-[#FFFDF7]/85 z-10"></div>
 
-    // ==========================================
-    // 🖥️ 1. 系統初始化：先抓資料，再畫畫面
-    // ==========================================
-    window.onload = function() {
-        // 使用 fetch 去抓取同一層目錄下的 card.json
-        fetch('https://jz-sys.github.io/renchin-card/renchincard.json')
-            .then(response => {
-                // 如果找不到檔案，拋出錯誤
-                if (!response.ok) {
-                    throw new Error("找不到 card.json 檔案");
-                }
-                // 將抓回來的文字轉換成 JSON 物件
-                return response.json(); 
-            })
-            .then(data => {
-                // 將資料存入全域變數，供後續使用
-                cardData = data; 
+        <div class="p-5 flex-1 overflow-y-auto relative z-20">
+            <div class="flex flex-col items-center mt-6">
+                <div id="render-avatar" class="w-24 h-24 sketch-border bg-cover bg-center shadow-md bg-white"></div>
                 
-                // 資料準備好後，才開始渲染畫面與啟動 LINE 功能
-                renderHtmlCard();
-                initializeLiff();
-            })
-            .catch(error => {
-                console.error("讀取資料失敗：", error);
-                document.getElementById('render-bio').innerText = "系統發生錯誤，無法載入名片資料。";
-            });
-    };
+                <h1 id="render-name" class="text-xl font-black mt-4 text-zinc-800"></h1>
+                <p id="render-title" class="text-sm font-bold mt-1 text-[#FF6B6B]"></p>
+                <p id="render-bio" class="text-xs text-zinc-600 text-center mt-3 px-3 leading-relaxed">載入中...</p>
+            </div>
 
-    // ==========================================
-    // 🖥️ 2. 渲染網頁框架邏輯 (跟之前一樣，不用改)
-    // ==========================================
-    function renderHtmlCard() {
-        document.getElementById('render-bg').style.backgroundImage = `url('${cardData.images.backgroundUrl}')`;
-        document.getElementById('render-avatar').style.backgroundImage = `url('${cardData.images.avatarUrl}')`;
-        document.getElementById('render-name').innerText = cardData.profile.name;
-        document.getElementById('render-title').innerText = cardData.profile.title;
-        document.getElementById('render-bio').innerText = cardData.profile.bio;
+            <div id="render-links" class="mt-6 space-y-3"></div>
+        </div>
 
-        const linksContainer = document.getElementById('render-links');
-        cardData.links.forEach(link => {
-            const a = document.createElement('a');
-            a.href = link.url;
-            a.target = "_blank";
-            a.className = "flex justify-center w-full py-3 sketch-border text-sm font-bold text-zinc-800 bg-white/90 backdrop-blur-sm transition active:translate-y-0.5 active:bg-zinc-100";
-            a.innerText = link.title;
-            linksContainer.appendChild(a);
-        });
-    }
+        <div class="p-4 border-t-3 border-zinc-800 bg-[#FFFDF7] relative z-20 shrink-0">
+            <div class="grid grid-cols-2 gap-3">
+                <button id="btn-share" class="py-2.5 sketch-border sketch-shadow font-bold text-sm bg-zinc-800 text-white active:translate-y-1 active:shadow-none transition-all">
+                    分享這張名片
+                </button>
+                <button id="btn-close" class="py-2.5 bg-white sketch-border font-bold text-sm active:translate-y-1 transition-all">
+                    關閉視窗
+                </button>
+            </div>
+        </div>
+    </div>
 
-    // ==========================================
-    // 💬 3. 動態生成 Flex Message JSON 與 LIFF 功能
-    // ==========================================
-    function initializeLiff() {
-        liff.init({ liffId: MY_LIFF_ID }).then(() => {
-            if (!liff.isLoggedIn()) liff.login();
-            
-            document.getElementById('btn-share').onclick = function() {
-                if (liff.isApiAvailable('shareTargetPicker')) {
-                    shareDynamicFlexMessage();
-                } else {
-                    alert("請在 LINE App 中開啟才能分享！");
-                }
-            };
+    <script>
+        // ⚠️ 記得把這裡換成你的 LIFF ID
+        const MY_LIFF_ID = "2010359676-IbNfBMDD"; 
+        const MY_LIFF_URL = `https://liff.line.me/${MY_LIFF_ID}`;
 
-            document.getElementById('btn-close').onclick = function() {
-                if (liff.isInClient()) liff.closeWindow();
-            };
-        });
-    }
+        let cardData = {};
 
-    // 發送 Flex Message 的邏輯 (一樣會去讀取 cardData 裡面的資料)
-    function shareDynamicFlexMessage() {
-        const flexJson = {
-            "type": "flex",
-            "altText": `收到來自 ${cardData.profile.name} 的名片`,
-            "contents": {
-                "type": "bubble",
-                "size": "mega",
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "paddingAll": "0px",
-                    "contents": [
-                        {
-                            "type": "image",
-                            "url": cardData.images.backgroundUrl,
-                            "size": "full",
-                            "aspectMode": "cover",
-                            "aspectRatio": "3:4"
-                        },
-                        {
-                            "type": "box",
-                            "layout": "vertical",
-                            "position": "absolute",
-                            "width": "100%",
-                            "height": "100%",
-                            "backgroundColor": "#FFFDF7DD",
-                            "paddingAll": "25px",
-                            "alignItems": "center",
-                            "contents": [
-                                {
-                                    "type": "image",
-                                    "url": cardData.images.avatarUrl,
-                                    "size": "xl",
-                                    "aspectMode": "cover",
-                                    "margin": "xl"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": cardData.profile.name,
-                                    "weight": "bold",
-                                    "size": "xl",
-                                    "color": "#3f3f46",
-                                    "margin": "xl"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": cardData.profile.title,
-                                    "size": "sm",
-                                    "color": "#FF6B6B",
-                                    "weight": "bold",
-                                    "margin": "sm"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": cardData.profile.bio,
-                                    "size": "sm",
-                                    "color": "#71717a",
-                                    "wrap": true,
-                                    "margin": "xl",
-                                    "align": "center"
-                                },
-                                {
-                                    "type": "box",
-                                    "layout": "vertical",
-                                    "margin": "xxl",
-                                    "contents": [
-                                        {
-                                            "type": "button",
-                                            "style": "primary",
-                                            "color": "#3f3f46",
-                                            "action": {
-                                                "type": "uri",
-                                                "label": "勉為其難看一下",
-                                                "uri": MY_LIFF_URL
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
+        // 1. 初始化：讀取同一個資料夾底下的 card.json
+        window.onload = function() {
+            // 如果你在本機測試出現 CORS 錯誤，或一直抓不到檔案，可以把 './card.json' 改成你的 GitHub 絕對網址
+            fetch('./card.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("檔案路徑錯誤或找不到檔案");
+                    return response.json(); 
+                })
+                .then(data => {
+                    cardData = data; 
+                    renderHtmlCard();
+                    initializeLiff();
+                })
+                .catch(error => {
+                    console.error("讀取資料失敗：", error);
+                    document.getElementById('render-bio').innerText = "無法載入名片資料，請確認 card.json 存在且格式正確。";
+                });
         };
 
-        liff.shareTargetPicker([ flexJson ])
-            .then((res) => { if (res) console.log("發送成功"); })
-            .catch(err => alert("發送失敗: " + err));
-    }
-</script>
+        // 2. 渲染畫面
+        function renderHtmlCard() {
+            document.getElementById('render-bg').style.backgroundImage = `url('${cardData.images.backgroundUrl}')`;
+            document.getElementById('render-avatar').style.backgroundImage = `url('${cardData.images.avatarUrl}')`;
+            document.getElementById('render-name').innerText = cardData.profile.name;
+            document.getElementById('render-title').innerText = cardData.profile.title;
+            document.getElementById('render-bio').innerText = cardData.profile.bio;
+
+            const linksContainer = document.getElementById('render-links');
+            linksContainer.innerHTML = ''; // 清空預設內容
+            cardData.links.forEach(link => {
+                const a = document.createElement('a');
+                a.href = link.url;
+                a.target = "_blank";
+                a.className = "flex justify-center w-full py-3 sketch-border text-sm font-bold text-zinc-800 bg-white/90 backdrop-blur-sm transition active:translate-y-0.5 active:bg-zinc-100";
+                a.innerText = link.title;
+                linksContainer.appendChild(a);
+            });
+        }
+
+        // 3. LIFF 與 Flex Message 發送
+        function initializeLiff() {
+            liff.init({ liffId: MY_LIFF_ID }).then(() => {
+                if (!liff.isLoggedIn()) liff.login();
+                
+                document.getElementById('btn-share').onclick = function() {
+                    if (liff.isApiAvailable('shareTargetPicker')) {
+                        shareDynamicFlexMessage();
+                    } else {
+                        alert("請在 LINE App 中開啟才能分享！");
+                    }
+                };
+
+                document.getElementById('btn-close').onclick = function() {
+                    if (liff.isInClient()) liff.closeWindow();
+                };
+            }).catch(err => console.error("LIFF 初始化失敗", err));
+        }
+
+        function shareDynamicFlexMessage() {
+            const flexJson = {
+                "type": "flex",
+                "altText": `收到來自 ${cardData.profile.name} 的名片`,
+                "contents": {
+                    "type": "bubble",
+                    "size": "mega",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "paddingAll": "0px",
+                        "contents": [
+                            {
+                                "type": "image",
+                                "url": cardData.images.backgroundUrl,
+                                "size": "full",
+                                "aspectMode": "cover",
+                                "aspectRatio": "3:4"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "vertical",
+                                "position": "absolute",
+                                "width": "100%",
+                                "height": "100%",
+                                "backgroundColor": "#FFFDF7DD",
+                                "paddingAll": "25px",
+                                "alignItems": "center",
+                                "contents": [
+                                    {
+                                        "type": "image",
+                                        "url": cardData.images.avatarUrl,
+                                        "size": "xl",
+                                        "aspectMode": "cover",
+                                        "margin": "xl"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": cardData.profile.name,
+                                        "weight": "bold",
+                                        "size": "xl",
+                                        "color": "#3f3f46",
+                                        "margin": "xl"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": cardData.profile.title,
+                                        "size": "sm",
+                                        "color": "#FF6B6B",
+                                        "weight": "bold",
+                                        "margin": "sm"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": cardData.profile.bio,
+                                        "size": "sm",
+                                        "color": "#71717a",
+                                        "wrap": true,
+                                        "margin": "xl",
+                                        "align": "center"
+                                    },
+                                    {
+                                        "type": "box",
+                                        "layout": "vertical",
+                                        "margin": "xxl",
+                                        "contents": [
+                                            {
+                                                "type": "button",
+                                                "style": "primary",
+                                                "color": "#3f3f46",
+                                                "action": {
+                                                    "type": "uri",
+                                                    "label": "勉為其難看一下",
+                                                    "uri": MY_LIFF_URL
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            };
+
+            liff.shareTargetPicker([ flexJson ])
+                .then((res) => { if (res) console.log("發送成功"); })
+                .catch(err => alert("發送失敗: " + err));
+        }
+    </script>
+</body>
+</html>
