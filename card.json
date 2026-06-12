@@ -24,4 +24,26 @@
     "flexOpenBtn": "都給了看一下啦"
   },
   "footerText": "© 2026 版權所有 | Designed by Renchin 厭世遜咖"
+  "products": [
+    {
+      "imageUrl": "https://placehold.co/400x400/FFD1DC/3f3f46?text=Item+1",
+      "title": "社畜專用馬克杯",
+      "desc": "NT$ 350 / 裝水特別好喝"
+    },
+    {
+      "imageUrl": "https://placehold.co/400x400/FFE4B5/3f3f46?text=Item+2",
+      "title": "不想上班防水貼紙",
+      "desc": "NT$ 120 / 一包共 10 張"
+    },
+    {
+      "imageUrl": "https://placehold.co/400x400/E9D5FF/3f3f46?text=Item+3",
+      "title": "眼神死帆布袋",
+      "desc": "NT$ 450 / 裝得下你的無奈"
+    },
+    {
+      "imageUrl": "https://placehold.co/400x400/D1FAE5/3f3f46?text=Item+4",
+      "title": "客製化厭世頭像",
+      "desc": "私訊報價 / 幫你畫出靈魂"
+    }
+  ]
 }
