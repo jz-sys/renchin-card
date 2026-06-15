@@ -1,7 +1,7 @@
 {
   "images": {
-    "backgroundUrl": "https://jz-sys.github.io/renchin-card/bg.png",
-    "avatarUrl": "https://jz-sys.github.io/renchin-card/icon.png"
+    "backgroundUrl": "https://jz-sys.github.io/renchin-card/base/bg.png",
+    "avatarUrl": "https://jz-sys.github.io/renchin-card/base/icon.png"
   },
   "profile": {
     "name": "厭世的遜咖",
@@ -33,16 +33,23 @@
         {
           "type": "link",
           "url": "https://store.line.me/",
-          "imageUrl": "https://placehold.co/400x400/FFD1DC/3f3f46?text=Item+1",
-          "title": "社畜專用馬克杯",
-          "desc": "NT$ 350 / 裝水特別好喝"
+          "imageUrl": "https://jz-sys.github.io/renchin-card/sticker/ow_bao.png",
+          "title": "嗷寶日常",
+          "desc": "NT$ 60 / 嗷寶天天玩腳色"
         },
         {
           "type": "link",
           "url": "https://store.line.me/",
-          "imageUrl": "https://placehold.co/400x400/FFE4B5/3f3f46?text=Item+2",
-          "title": "不想上班防水貼紙",
-          "desc": "NT$ 120 / 點此看詳情"
+          "imageUrl": "https://jz-sys.github.io/renchin-card/sticker/loser_life.png",
+          "title": "遜咖人生",
+          "desc": "NT$ 30 / 廢咖黑白日常"
+        },
+        {
+          "type": "link",
+          "url": "https://store.line.me/",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/sticker/a_pei.png",
+          "title": "啊配配日記",
+          "desc": "NT$ 30 / 互動日常"
         }
       ]
     },
