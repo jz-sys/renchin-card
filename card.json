@@ -23,7 +23,7 @@
     "htmlCloseBtn": "慢走不送💩",
     "flexOpenBtn": "都給了不看嗎👀",
     "tabProfile": "👤 關於我",
-    "tabProducts": "📦 我的作品"
+    "tabProducts": "📦 作品集"
   },
   "footerText": "© 2026 版權所有 | Designed by 厭世遜咖",
   "portfolioGroups": [
@@ -54,7 +54,7 @@
       ]
     },
     {
-      "sectionTitle": "🎨 楓谷造型創作 (純展示)",
+      "sectionTitle": "🎨 楓谷造型創作 (看看就好)",
       "items": [
         {
           "type": "image",
