@@ -1,7 +1,8 @@
 {
   "images": {
     "backgroundUrl": "https://jz-sys.github.io/renchin-card/base/bg.png",
-    "avatarUrl": "https://jz-sys.github.io/renchin-card/base/icon.png"
+    "avatarUrl": "https://jz-sys.github.io/renchin-card/base/icon.png""
+    "avatarFrameUrl": "https://placehold.co/400x400/transparent/3f3f46?text=Frame"
   },
   "profile": {
     "name": "厭世小遜咖",
@@ -10,16 +11,20 @@
   },
   "links": [
     {
+      "customIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Coffee",
       "title": "✅ 加好友 點擊這裡",
       "url": "https://line.me/ti/p/wtBGSSR5-A"
     },
     {
+      "customIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Coffee",
       "title": "🛖 金の屋 到此一遊",
       "url": "https://line.me/R/oaMessage/@362upynu/?哈囉!!到此一遊🐾"
     }
   ],
   "buttons": {
+    "htmlShareBtnIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
     "htmlShareBtn": "👽分享給朋友",
+    "htmlCloseBtnIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
     "htmlCloseBtn": "慢走不送💩",
     "flexOpenBtn": "都給了不看嗎👀",
     "tabProfile": "👤 關於我",
