@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://jz-sys.github.io/renchin-card/base/favicon.png" type="image/png">
-    <title>Renchin | LINE 名片</title>
+    <title>不想上班的創作者 | 專屬數位名片</title>
     <link rel="icon" href="icon.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -28,8 +27,8 @@
         <div class="p-5 flex-1 overflow-y-auto relative z-20 flex flex-col">
             
             <div class="flex justify-center space-x-2 mb-5 shrink-0">
-                <button id="btn-tab-profile" onclick="switchPage('profile')" class="flex-1 py-1.5 sketch-border bg-zinc-800 text-white font-bold text-sm transition-all"></button>
-                <button id="btn-tab-products" onclick="switchPage('products')" class="flex-1 py-1.5 sketch-border bg-white text-zinc-800 font-bold text-sm transition-all"></button>
+                <button id="btn-tab-profile" onclick="switchPage('profile')" class="flex-1 flex items-center justify-center gap-1.5 py-1.5 sketch-border bg-zinc-800 text-white font-bold text-sm transition-all"></button>
+                <button id="btn-tab-products" onclick="switchPage('products')" class="flex-1 flex items-center justify-center gap-1.5 py-1.5 sketch-border bg-white text-zinc-800 font-bold text-sm transition-all"></button>
             </div>
 
             <div id="page-profile" class="flex flex-col items-center">
@@ -59,14 +58,14 @@
 
     <script>
         // ⚠️ 1. 記得補上你的 LIFF ID
-        const MY_LIFF_ID = "2010359676-IbNfBMDD"; 
+        const MY_LIFF_ID = "YOUR_LIFF_ID_HERE"; 
         const MY_LIFF_URL = `https://liff.line.me/${MY_LIFF_ID}`;
 
         let cardData = {};
 
         window.onload = function() {
             // ⚠️ 2. 記得改為你的 GitHub 絕對網址
-            fetch('https://jz-sys.github.io/renchin-card/card.json')
+            fetch('card.json')
                 .then(res => {
                     if (!res.ok) throw new Error("找不到檔案");
                     return res.json(); 
@@ -81,12 +80,16 @@
                 });
         };
 
-        // 切換分頁邏輯
+        // 升級：切換分頁邏輯 (包含圖示顏色自動反轉魔法)
         function switchPage(page) {
             const pageProfile = document.getElementById('page-profile');
             const pageProducts = document.getElementById('page-products');
             const btnProfile = document.getElementById('btn-tab-profile');
             const btnProducts = document.getElementById('btn-tab-products');
+            
+            // 抓取剛剛生成的圖示 (如果有的話)
+            const iconProfile = document.getElementById('icon-tab-profile');
+            const iconProducts = document.getElementById('icon-tab-products');
 
             if (page === 'profile') {
                 pageProfile.classList.remove('hidden');
@@ -94,10 +97,16 @@
                 pageProducts.classList.add('hidden');
                 pageProducts.classList.remove('flex');
                 
+                // 按鈕變色
                 btnProfile.classList.replace('bg-white', 'bg-zinc-800');
                 btnProfile.classList.replace('text-zinc-800', 'text-white');
                 btnProducts.classList.replace('bg-zinc-800', 'bg-white');
                 btnProducts.classList.replace('text-white', 'text-zinc-800');
+
+                // 魔法：當按鈕變黑底時，圖示反轉成白色；變白底時，取消反轉變回黑色
+                if (iconProfile) iconProfile.classList.add('invert');
+                if (iconProducts) iconProducts.classList.remove('invert');
+
             } else {
                 pageProfile.classList.add('hidden');
                 pageProfile.classList.remove('flex');
@@ -108,10 +117,14 @@
                 btnProducts.classList.replace('text-zinc-800', 'text-white');
                 btnProfile.classList.replace('bg-zinc-800', 'bg-white');
                 btnProfile.classList.replace('text-white', 'text-zinc-800');
+
+                // 魔法：當按鈕變黑底時，圖示反轉成白色；變白底時，取消反轉變回黑色
+                if (iconProducts) iconProducts.classList.add('invert');
+                if (iconProfile) iconProfile.classList.remove('invert');
             }
         }
 
-        // 渲染畫面的主要邏輯
+        // 升級：渲染畫面的主要邏輯
         function renderHtmlCard() {
             // 渲染背景與頭像
             document.getElementById('render-bg').style.backgroundImage = `url('${cardData.images.backgroundUrl}')`;
@@ -131,8 +144,17 @@
             document.getElementById('render-title').innerText = cardData.profile.title;
             document.getElementById('render-bio').innerText = cardData.profile.bio;
             document.getElementById('render-footer').innerText = cardData.footerText;
-            document.getElementById('btn-tab-profile').innerText = cardData.buttons.tabProfile;
-            document.getElementById('btn-tab-products').innerText = cardData.buttons.tabProducts;
+
+            // 📢 升級：渲染分頁按鈕 (帶有自訂小圖示與 ID)
+            // 💡 密技：因為預設是關於我頁面 active (黑底)，所以圖示預設加上 invert
+            let tabProfileIconHtml = (cardData.buttons.tabProfileIcon && cardData.buttons.tabProfileIcon !== '') 
+                ? `<img id="icon-tab-profile" src="${cardData.buttons.tabProfileIcon}" class="w-4 h-4 object-contain invert" alt="profile">` : '';
+            document.getElementById('btn-tab-profile').innerHTML = `${tabProfileIconHtml}<span>${cardData.buttons.tabProfile}</span>`;
+
+            let tabProductsIconHtml = (cardData.buttons.tabProductsIcon && cardData.buttons.tabProductsIcon !== '') 
+                ? `<img id="icon-tab-products" src="${cardData.buttons.tabProductsIcon}" class="w-4 h-4 object-contain" alt="products">` : '';
+            document.getElementById('btn-tab-products').innerHTML = `${tabProductsIconHtml}<span>${cardData.buttons.tabProducts}</span>`;
+
 
             // 渲染底部按鈕 (帶有自訂小圖示)
             let shareIconHtml = (cardData.buttons.htmlShareBtnIcon && cardData.buttons.htmlShareBtnIcon !== '') 
