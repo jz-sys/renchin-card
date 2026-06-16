@@ -229,7 +229,7 @@
                     const titleEl = document.createElement('h2');
                     titleEl.className = "flex items-center justify-center w-full font-black text-zinc-800 text-[13px] mt-4 mb-3 tracking-widest text-[#FF6B6B] gap-2";
                     let iconHtml = group.sectionIcon ? `<img src="${group.sectionIcon}" class="w-5 h-5 object-contain">` : '';
-                    titleEl.innerHTML = `${iconHtml}<span>- ${group.sectionTitle} -</span>`;
+                    titleEl.innerHTML = `${iconHtml}<span> ${group.sectionTitle}</span>`;
                     container.appendChild(titleEl);
 
                     const gridDiv = document.createElement('div');
