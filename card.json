@@ -5,7 +5,7 @@
     "avatarFrameUrl": "https://jz-sys.github.io/renchin-card/images/base/avatarframe.png"
   },
   "profile": {
-    "name": "厭世小遜咖",
+    "name": "Renchin",
     "title": "硬體裝修 / 軟體設計規劃",
     "bio": "裡面都是沒啥用的東西，隨便逛逛，路過看看。"
   },
@@ -57,7 +57,7 @@
   "shopGroups": [
     {
       "sectionIcon": "https://jz-sys.github.io/renchin-card/images/icon/item002.png",
-      "sectionTitle": "LINE貼圖創作購物區",
+      "sectionTitle": "貼圖創作購物區",
       "items": [
         {
           "type": "link",
