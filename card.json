@@ -49,11 +49,11 @@
       "desc": "這是一組極度敷衍的貼圖，專門用來對付老闆跟不想回的群組訊息。畫這組貼圖的時候我真的超想睡覺，所以線條有點抖是正常的。"
     }
   ],
-  "portfolioGroups": [
+  "shopGroups": [
     {
       "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Cart",
       "sectionTitle": "LINE貼圖創作購物區",
-      "shopGroups": [
+      "items": [
         {
           "type": "link",
           "url": "https://store.line.me/stickershop/product/32887758/zh-Hant?from=sticker",
