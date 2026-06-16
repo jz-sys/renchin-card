@@ -1,8 +1,8 @@
 {
   "images": {
     "backgroundUrl": "https://jz-sys.github.io/renchin-card/base/bg.png",
-    "avatarUrl": "https://jz-sys.github.io/renchin-card/base/icon.png",
-    "avatarFrameUrl": "https://placehold.co/400x400/transparent/3f3f46?text=Frame"
+    "avatarUrl": "https://jz-sys.github.io/renchin-card/base/avatar.png",
+    "avatarFrameUrl": "https://jz-sys.github.io/renchin-card/base/avatarframe.png"
   },
   "profile": {
     "name": "厭世小遜咖",
