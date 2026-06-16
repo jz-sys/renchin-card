@@ -39,12 +39,13 @@
   "footerText": "© 2026 版權所有 | Designed by 厭世遜咖",
   "newsItems": [
     {
-      "imageUrl": "https://placehold.co/600x300/FFE4B5/3f3f46?text=News+1",
-      "title": "2026 台北文博會參展預告",
-      "desc": "這次我們會在花博爭艷館擺攤喔！現場會有超多限定的厭世新品。\n展期：8/15 - 8/18",
+      "imageUrl": "https://jz-sys.github.io/renchin-card/images/news/item001.png",
+      "title": "冠清眼鏡工藝社",
+      "desc": "目前只有在台南有設攤喔!\n海安路上的水仙宮市場 | 到中午12點\n北安路上的帕里啪里跳蚤市集 | 到下午16點\n善化的牛墟市集 | 到中午12點",
       "links": [
-        { "text": "📍 點我查看展場地圖", "url": "https://maps.google.com" },
-        { "text": "🎫 前往預購專屬門票", "url": "https://www.example.com" }
+        { "text": "📍 水仙宮市場", "url": "https://maps.app.goo.gl/VJjUJtbsHb8STjy98" },
+        { "text": "📍 帕里啪里跳蚤市集", "url": "https://maps.app.goo.gl/PxFJVdZ4ifrr2ADT8" },
+        { "text": "📍 牛墟市集", "url": "https://maps.app.goo.gl/koLhLvqK6GhD9vLX6" }
       ]
     },
     {
