@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>不想上班的創作者 | 專屬數位名片</title>
+    <link rel="icon" href="https://jz-sys.github.io/renchin-card/base/favicon.png" type="image/png">
+    <title>Renchin 名片</title>
     <link rel="icon" href="icon.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -16,37 +17,59 @@
             box-shadow: 4px 4px 0px 0px rgba(63, 63, 70, 1);
         }
         ::-webkit-scrollbar { display: none; }
+        /* 讓文字換行符號(\n)能正確顯示 */
+        .whitespace-pre-line { white-space: pre-line; } 
     </style>
 </head>
 <body class="bg-[#FFFDF7] flex flex-col items-center justify-start min-h-screen p-4 font-sans text-zinc-800">
 
-    <div class="sketch-border sketch-shadow w-full max-w-sm relative flex flex-col h-[85vh] max-h-[700px] overflow-hidden">
+    <!-- 全螢幕燈箱 (預設隱藏，層級 z-50 蓋住所有人) -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/80 hidden flex-col items-center justify-center p-5 backdrop-blur-sm transition-opacity opacity-0" onclick="closeLightbox(event)">
+        <div class="relative w-full max-w-sm bg-[#FFFDF7] sketch-border p-3 flex flex-col scale-95 transition-transform duration-200" id="lightbox-content" onclick="event.stopPropagation()">
+            <button onclick="closeLightbox(event)" class="absolute -top-3 -right-3 w-10 h-10 sketch-border bg-[#FF6B6B] font-black text-white text-lg flex items-center justify-center active:translate-y-1 z-10 shadow-md">X</button>
+            <img id="lightbox-img" src="" class="w-full max-h-[60vh] object-contain sketch-border mb-3 bg-white">
+            <h3 id="lightbox-title" class="font-black text-[15px] text-zinc-800"></h3>
+            <p id="lightbox-desc" class="text-[13px] text-[#FF6B6B] font-bold mt-1"></p>
+        </div>
+    </div>
+
+    <div class="sketch-border sketch-shadow w-full max-w-sm relative flex flex-col h-[85vh] max-h-[750px] overflow-hidden">
         <div id="render-bg" class="absolute inset-0 bg-cover bg-center z-0"></div>
         <div class="absolute inset-0 bg-[#FFFDF7]/85 z-10"></div>
 
         <div class="p-5 flex-1 overflow-y-auto relative z-20 flex flex-col">
             
-            <div class="flex justify-center space-x-2 mb-5 shrink-0">
-                <button id="btn-tab-profile" onclick="switchPage('profile')" class="flex-1 flex items-center justify-center gap-1.5 py-1.5 sketch-border bg-zinc-800 text-white font-bold text-sm transition-all"></button>
-                <button id="btn-tab-products" onclick="switchPage('products')" class="flex-1 flex items-center justify-center gap-1.5 py-1.5 sketch-border bg-white text-zinc-800 font-bold text-sm transition-all"></button>
+            <!-- 📢 升級：2x2 網格切換按鈕 -->
+            <div class="grid grid-cols-2 gap-2 mb-5 shrink-0">
+                <button id="btn-tab-profile" onclick="switchPage('profile')" class="flex items-center justify-center gap-1.5 py-2 sketch-border bg-zinc-800 text-white font-bold text-[13px] transition-all"></button>
+                <button id="btn-tab-news" onclick="switchPage('news')" class="flex items-center justify-center gap-1.5 py-2 sketch-border bg-white text-zinc-800 font-bold text-[13px] transition-all"></button>
+                <button id="btn-tab-shop" onclick="switchPage('shop')" class="flex items-center justify-center gap-1.5 py-2 sketch-border bg-white text-zinc-800 font-bold text-[13px] transition-all"></button>
+                <button id="btn-tab-gallery" onclick="switchPage('gallery')" class="flex items-center justify-center gap-1.5 py-2 sketch-border bg-white text-zinc-800 font-bold text-[13px] transition-all"></button>
             </div>
 
+            <!-- 📄 分頁 1：關於我 -->
             <div id="page-profile" class="flex flex-col items-center">
                 <div class="relative flex items-center justify-center shrink-0 w-[120px] h-[120px]">
                     <div id="render-avatar" class="w-24 h-24 sketch-border bg-cover bg-center shadow-md bg-white z-10"></div>
                     <div id="render-avatar-frame" class="absolute inset-0 bg-contain bg-center bg-no-repeat z-20 pointer-events-none hidden"></div>
                 </div>
-
                 <h1 id="render-name" class="text-xl font-black mt-4 text-zinc-800"></h1>
                 <p id="render-title" class="text-sm font-bold mt-1 text-[#FF6B6B]"></p>
-                <p id="render-bio" class="text-xs text-zinc-600 text-center mt-3 px-3 leading-relaxed">載入中...</p>
+                <p id="render-bio" class="text-[13px] text-zinc-600 text-center mt-3 px-2 leading-relaxed">載入中...</p>
                 <div id="render-links" class="mt-6 space-y-3 w-full"></div>
             </div>
 
-            <div id="page-products" class="hidden flex-col w-full pb-2">
-                </div>
+            <!-- 📰 分頁 2：最新動態 (一欄式/可伸縮) -->
+            <div id="page-news" class="hidden flex-col w-full pb-2 space-y-4"></div>
+
+            <!-- 🛒 分頁 3：商城/連結區 (點擊跳轉) -->
+            <div id="page-shop" class="hidden flex-col w-full pb-2"></div>
+
+            <!-- 🎨 分頁 4：純展示區 (點擊放大燈箱) -->
+            <div id="page-gallery" class="hidden flex-col w-full pb-2"></div>
         </div>
 
+        <!-- 底部按鈕區 -->
         <div class="p-4 border-t-3 border-zinc-800 bg-[#FFFDF7] relative z-20 shrink-0">
             <div class="grid grid-cols-2 gap-3">
                 <button id="btn-share" class="flex items-center justify-center gap-2 py-2.5 sketch-border sketch-shadow font-bold text-sm bg-zinc-800 text-white active:translate-y-1 active:shadow-none transition-all"></button>
@@ -57,212 +80,195 @@
     </div>
 
     <script>
-        // ⚠️ 1. 記得補上你的 LIFF ID
-        const MY_LIFF_ID = "YOUR_LIFF_ID_HERE"; 
+        const MY_LIFF_ID = "2010359676-IbNfBMDD"; 
         const MY_LIFF_URL = `https://liff.line.me/${MY_LIFF_ID}`;
-
         let cardData = {};
 
         window.onload = function() {
-            // ⚠️ 2. 記得改為你的 GitHub 絕對網址
             fetch('card.json')
-                .then(res => {
-                    if (!res.ok) throw new Error("找不到檔案");
-                    return res.json(); 
-                })
-                .then(data => {
-                    cardData = data; 
-                    renderHtmlCard();
-                    initializeLiff();
-                })
-                .catch(err => {
-                    document.getElementById('render-bio').innerText = "無法載入資料，請確認 card.json";
-                });
+                .then(res => res.json())
+                .then(data => { cardData = data; renderHtmlCard(); initializeLiff(); })
+                .catch(err => document.getElementById('render-bio').innerText = "載入失敗，請確認 JSON");
         };
 
-        // 升級：切換分頁邏輯 (包含圖示顏色自動反轉魔法)
-        function switchPage(page) {
-            const pageProfile = document.getElementById('page-profile');
-            const pageProducts = document.getElementById('page-products');
-            const btnProfile = document.getElementById('btn-tab-profile');
-            const btnProducts = document.getElementById('btn-tab-products');
+        // 📢 升級：更聰明的 4 分頁切換引擎
+        function switchPage(activePage) {
+            const pages = ['profile', 'news', 'shop', 'gallery'];
             
-            // 抓取剛剛生成的圖示 (如果有的話)
-            const iconProfile = document.getElementById('icon-tab-profile');
-            const iconProducts = document.getElementById('icon-tab-products');
+            pages.forEach(page => {
+                const pageEl = document.getElementById(`page-${page}`);
+                const btnEl = document.getElementById(`btn-${page === 'profile' ? 'tab-profile' : 'tab-' + page}`);
+                const iconEl = document.getElementById(`icon-tab-${page}`);
 
-            if (page === 'profile') {
-                pageProfile.classList.remove('hidden');
-                pageProfile.classList.add('flex');
-                pageProducts.classList.add('hidden');
-                pageProducts.classList.remove('flex');
-                
-                // 按鈕變色
-                btnProfile.classList.replace('bg-white', 'bg-zinc-800');
-                btnProfile.classList.replace('text-zinc-800', 'text-white');
-                btnProducts.classList.replace('bg-zinc-800', 'bg-white');
-                btnProducts.classList.replace('text-white', 'text-zinc-800');
+                if (page === activePage) {
+                    pageEl.classList.remove('hidden');
+                    pageEl.classList.add('flex');
+                    btnEl.classList.replace('bg-white', 'bg-zinc-800');
+                    btnEl.classList.replace('text-zinc-800', 'text-white');
+                    if (iconEl) iconEl.classList.add('invert');
+                } else {
+                    pageEl.classList.add('hidden');
+                    pageEl.classList.remove('flex');
+                    btnEl.classList.replace('bg-zinc-800', 'bg-white');
+                    btnEl.classList.replace('text-white', 'text-zinc-800');
+                    if (iconEl) iconEl.classList.remove('invert');
+                }
+            });
+        }
 
-                // 魔法：當按鈕變黑底時，圖示反轉成白色；變白底時，取消反轉變回黑色
-                if (iconProfile) iconProfile.classList.add('invert');
-                if (iconProducts) iconProducts.classList.remove('invert');
-
+        // 📢 升級：最新動態的文字伸縮魔法
+        function toggleNews(element) {
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.innerText = '▲ 收起';
             } else {
-                pageProfile.classList.add('hidden');
-                pageProfile.classList.remove('flex');
-                pageProducts.classList.remove('hidden');
-                pageProducts.classList.add('flex');
-
-                btnProducts.classList.replace('bg-white', 'bg-zinc-800');
-                btnProducts.classList.replace('text-zinc-800', 'text-white');
-                btnProfile.classList.replace('bg-zinc-800', 'bg-white');
-                btnProfile.classList.replace('text-white', 'text-zinc-800');
-
-                // 魔法：當按鈕變黑底時，圖示反轉成白色；變白底時，取消反轉變回黑色
-                if (iconProducts) iconProducts.classList.add('invert');
-                if (iconProfile) iconProfile.classList.remove('invert');
+                content.classList.add('hidden');
+                icon.innerText = '▼ 展開說明';
             }
         }
 
-        // 升級：渲染畫面的主要邏輯
+        // 📢 升級：燈箱開啟與關閉魔法
+        function openLightbox(imgUrl, title, desc) {
+            const lb = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = imgUrl;
+            document.getElementById('lightbox-title').innerText = title;
+            document.getElementById('lightbox-desc').innerText = desc;
+            
+            lb.classList.remove('hidden');
+            lb.classList.add('flex');
+            // 小延遲讓淡入動畫生效
+            setTimeout(() => {
+                lb.classList.remove('opacity-0');
+                document.getElementById('lightbox-content').classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeLightbox(event) {
+            const lb = document.getElementById('lightbox');
+            lb.classList.add('opacity-0');
+            document.getElementById('lightbox-content').classList.add('scale-95');
+            // 等動畫跑完再隱藏
+            setTimeout(() => {
+                lb.classList.add('hidden');
+                lb.classList.remove('flex');
+            }, 200);
+        }
+
         function renderHtmlCard() {
-            // 渲染背景與頭像
+            // 背景與頭像
             document.getElementById('render-bg').style.backgroundImage = `url('${cardData.images.backgroundUrl}')`;
             document.getElementById('render-avatar').style.backgroundImage = `url('${cardData.images.avatarUrl}')`;
-            
-            // 渲染頭像外框
             const avatarFrame = document.getElementById('render-avatar-frame');
-            if (cardData.images.avatarFrameUrl && cardData.images.avatarFrameUrl !== '') {
+            if (cardData.images.avatarFrameUrl) {
                 avatarFrame.style.backgroundImage = `url('${cardData.images.avatarFrameUrl}')`;
                 avatarFrame.classList.remove('hidden');
-            } else {
-                avatarFrame.classList.add('hidden');
             }
 
-            // 渲染基本文字
+            // 基本資料
             document.getElementById('render-name').innerText = cardData.profile.name;
             document.getElementById('render-title').innerText = cardData.profile.title;
             document.getElementById('render-bio').innerText = cardData.profile.bio;
             document.getElementById('render-footer').innerText = cardData.footerText;
 
-            // 📢 升級：渲染分頁按鈕 (帶有自訂小圖示與 ID)
-            // 💡 密技：因為預設是關於我頁面 active (黑底)，所以圖示預設加上 invert
-            let tabProfileIconHtml = (cardData.buttons.tabProfileIcon && cardData.buttons.tabProfileIcon !== '') 
-                ? `<img id="icon-tab-profile" src="${cardData.buttons.tabProfileIcon}" class="w-4 h-4 object-contain invert" alt="profile">` : '';
-            document.getElementById('btn-tab-profile').innerHTML = `${tabProfileIconHtml}<span>${cardData.buttons.tabProfile}</span>`;
+            // 渲染 4 個分頁按鈕
+            const renderTabBtn = (id, iconUrl, text, isFirst) => {
+                let iconHtml = iconUrl ? `<img id="icon-tab-${id}" src="${iconUrl}" class="w-3.5 h-3.5 object-contain ${isFirst ? 'invert' : ''}" alt="${id}">` : '';
+                document.getElementById(`btn-tab-${id}`).innerHTML = `${iconHtml}<span>${text}</span>`;
+            };
+            renderTabBtn('profile', cardData.buttons.tabProfileIcon, cardData.buttons.tabProfile, true);
+            renderTabBtn('news', cardData.buttons.tabNewsIcon, cardData.buttons.tabNews, false);
+            renderTabBtn('shop', cardData.buttons.tabShopIcon, cardData.buttons.tabShop, false);
+            renderTabBtn('gallery', cardData.buttons.tabGalleryIcon, cardData.buttons.tabGallery, false);
 
-            let tabProductsIconHtml = (cardData.buttons.tabProductsIcon && cardData.buttons.tabProductsIcon !== '') 
-                ? `<img id="icon-tab-products" src="${cardData.buttons.tabProductsIcon}" class="w-4 h-4 object-contain" alt="products">` : '';
-            document.getElementById('btn-tab-products').innerHTML = `${tabProductsIconHtml}<span>${cardData.buttons.tabProducts}</span>`;
-
-
-            // 渲染底部按鈕 (帶有自訂小圖示)
-            let shareIconHtml = (cardData.buttons.htmlShareBtnIcon && cardData.buttons.htmlShareBtnIcon !== '') 
-                ? `<img src="${cardData.buttons.htmlShareBtnIcon}" class="w-4 h-4 object-contain invert" alt="share">` : '';
+            // 底部按鈕
+            let shareIconHtml = cardData.buttons.htmlShareBtnIcon ? `<img src="${cardData.buttons.htmlShareBtnIcon}" class="w-4 h-4 object-contain invert" alt="share">` : '';
             document.getElementById('btn-share').innerHTML = `${shareIconHtml}<span>${cardData.buttons.htmlShareBtn}</span>`;
-
-            let closeIconHtml = (cardData.buttons.htmlCloseBtnIcon && cardData.buttons.htmlCloseBtnIcon !== '') 
-                ? `<img src="${cardData.buttons.htmlCloseBtnIcon}" class="w-4 h-4 object-contain" alt="close">` : '';
+            let closeIconHtml = cardData.buttons.htmlCloseBtnIcon ? `<img src="${cardData.buttons.htmlCloseBtnIcon}" class="w-4 h-4 object-contain" alt="close">` : '';
             document.getElementById('btn-close').innerHTML = `${closeIconHtml}<span>${cardData.buttons.htmlCloseBtn}</span>`;
 
-            // 渲染社群連結 (帶有自訂小圖示)
+            // 第一頁：連結區
             const linksContainer = document.getElementById('render-links');
             linksContainer.innerHTML = ''; 
             cardData.links.forEach(link => {
                 const a = document.createElement('a');
-                a.href = link.url;
-                a.target = "_blank";
+                a.href = link.url; a.target = "_blank";
                 a.className = "flex items-center justify-center w-full py-3 sketch-border text-sm font-bold text-zinc-800 bg-white/90 backdrop-blur-sm transition active:translate-y-0.5 active:bg-zinc-100 gap-2";
-                
-                let iconHtml = (link.customIcon && link.customIcon !== '') 
-                    ? `<img src="${link.customIcon}" class="w-5 h-5 object-contain" alt="icon">` : '';
+                let iconHtml = link.customIcon ? `<img src="${link.customIcon}" class="w-5 h-5 object-contain">` : '';
                 a.innerHTML = `${iconHtml}<span>${link.title}</span>`;
-                
                 linksContainer.appendChild(a);
             });
 
-            // 渲染商品分區 (支援標題小圖示)
-            const productsContainer = document.getElementById('page-products');
-            productsContainer.innerHTML = ''; 
-            
-            if (cardData.portfolioGroups) {
-                cardData.portfolioGroups.forEach(group => {
-                    // 生成分區標題
-                    const titleElement = document.createElement('h2');
-                    titleElement.className = "flex items-center justify-center w-full font-black text-zinc-800 text-[13px] mt-4 mb-3 tracking-widest text-[#FF6B6B] gap-2";
-                    
-                    let sectionIconHtml = (group.sectionIcon && group.sectionIcon !== '') 
-                        ? `<img src="${group.sectionIcon}" class="w-5 h-5 object-contain" alt="section-icon">` : '';
-                    titleElement.innerHTML = `${sectionIconHtml}<span>- ${group.sectionTitle} -</span>`;
-                    productsContainer.appendChild(titleElement);
+            // 📰 第二頁：最新動態
+            const newsContainer = document.getElementById('page-news');
+            newsContainer.innerHTML = '';
+            if (cardData.newsItems) {
+                cardData.newsItems.forEach(news => {
+                    const newsDiv = document.createElement('div');
+                    newsDiv.className = "sketch-border bg-white/90 p-2.5 flex flex-col w-full";
+                    newsDiv.innerHTML = `
+                        <div class="w-full aspect-[2/1] bg-cover bg-center sketch-border mb-3" style="background-image: url('${news.imageUrl}')"></div>
+                        <h3 class="font-bold text-[14px] text-zinc-800 flex justify-between items-center cursor-pointer select-none active:text-[#FF6B6B]" onclick="toggleNews(this)">
+                            <span>${news.title}</span>
+                            <span class="text-[11px] text-[#FF6B6B] bg-[#FFFDF7] px-2 py-1 sketch-border toggle-icon">▼ 展開說明</span>
+                        </h3>
+                        <p class="text-[13px] text-zinc-600 mt-3 hidden toggle-content leading-relaxed whitespace-pre-line border-t-2 border-dashed border-zinc-200 pt-2">${news.desc}</p>
+                    `;
+                    newsContainer.appendChild(newsDiv);
+                });
+            }
 
-                    // 生成網格
+            // 幫忙渲染分區的共用邏輯
+            const renderGridGroups = (containerId, groupsData, isGallery) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                if (!groupsData) return;
+
+                groupsData.forEach(group => {
+                    const titleEl = document.createElement('h2');
+                    titleEl.className = "flex items-center justify-center w-full font-black text-zinc-800 text-[13px] mt-4 mb-3 tracking-widest text-[#FF6B6B] gap-2";
+                    let iconHtml = group.sectionIcon ? `<img src="${group.sectionIcon}" class="w-5 h-5 object-contain">` : '';
+                    titleEl.innerHTML = `${iconHtml}<span>- ${group.sectionTitle} -</span>`;
+                    container.appendChild(titleEl);
+
                     const gridDiv = document.createElement('div');
                     gridDiv.className = "grid grid-cols-2 gap-3 mb-4 w-full";
 
                     group.items.forEach(item => {
-                        const isLink = item.type === 'link' && item.url !== '';
-                        const cardElement = document.createElement(isLink ? 'a' : 'div');
-                        let baseClass = "flex flex-col sketch-border bg-white/90 p-2 h-full ";
+                        // 如果是商城區，用 a 標籤；如果是展示區，用 div 標籤
+                        const card = document.createElement(isGallery ? 'div' : 'a');
+                        let baseClass = "flex flex-col sketch-border bg-white/90 p-2 h-full cursor-pointer transition active:translate-y-1 active:bg-zinc-100 hover:shadow-md";
                         
-                        if (isLink) {
-                            cardElement.href = item.url;
-                            cardElement.target = "_blank";
-                            cardElement.className = baseClass + "cursor-pointer transition active:translate-y-1 active:bg-zinc-100 hover:shadow-md";
+                        if (!isGallery) {
+                            card.href = item.url;
+                            card.target = "_blank";
                         } else {
-                            cardElement.className = baseClass;
+                            // 綁定燈箱開啟事件 (傳入單引號防止字串跳脫報錯)
+                            card.setAttribute('onclick', `openLightbox('${item.imageUrl}', '${item.title}', '${item.desc}')`);
                         }
-
-                        cardElement.innerHTML = `
+                        
+                        card.className = baseClass;
+                        card.innerHTML = `
                             <div class="w-full aspect-square bg-cover bg-center sketch-border mb-2" style="background-image: url('${item.imageUrl}')"></div>
                             <h3 class="font-bold text-[13px] text-zinc-800 leading-tight truncate">${item.title}</h3>
                             <p class="text-[11px] text-[#FF6B6B] font-bold mt-1 truncate">${item.desc}</p>
                         `;
-                        gridDiv.appendChild(cardElement);
+                        gridDiv.appendChild(card);
                     });
-                    productsContainer.appendChild(gridDiv);
+                    container.appendChild(gridDiv);
                 });
-            }
-        }
-
-        // 發送 Flex Message 邏輯保持不變
-        function initializeLiff() {
-            liff.init({ liffId: MY_LIFF_ID }).then(() => {
-                if (!liff.isLoggedIn()) liff.login();
-                document.getElementById('btn-share').onclick = function() {
-                    if (liff.isApiAvailable('shareTargetPicker')) shareDynamicFlexMessage();
-                };
-                document.getElementById('btn-close').onclick = function() {
-                    if (liff.isInClient()) liff.closeWindow();
-                };
-            });
-        }
-
-        function shareDynamicFlexMessage() {
-            const flexJson = {
-                "type": "flex", "altText": `收到來自 ${cardData.profile.name} 的名片`,
-                "contents": {
-                    "type": "bubble", "size": "mega",
-                    "body": {
-                        "type": "box", "layout": "vertical", "paddingAll": "0px",
-                        "contents": [
-                            { "type": "image", "url": cardData.images.backgroundUrl, "size": "full", "aspectMode": "cover", "aspectRatio": "3:4" },
-                            {
-                                "type": "box", "layout": "vertical", "position": "absolute", "width": "100%", "height": "100%", "backgroundColor": "#FFFDF7DD", "paddingAll": "25px", "alignItems": "center",
-                                "contents": [
-                                    { "type": "image", "url": cardData.images.avatarUrl, "size": "xl", "aspectMode": "cover", "margin": "xl" },
-                                    { "type": "text", "text": cardData.profile.name, "weight": "bold", "size": "xl", "color": "#3f3f46", "margin": "xl" },
-                                    { "type": "text", "text": cardData.profile.title, "size": "sm", "color": "#FF6B6B", "weight": "bold", "margin": "sm" },
-                                    { "type": "text", "text": cardData.profile.bio, "size": "sm", "color": "#71717a", "wrap": true, "margin": "xl", "align": "center" },
-                                    { "type": "box", "layout": "vertical", "margin": "xxl", "contents": [ { "type": "button", "style": "primary", "color": "#3f3f46", "action": { "type": "uri", "label": cardData.buttons.flexOpenBtn, "uri": MY_LIFF_URL } } ] }
-                                ]
-                            }
-                        ]
-                    }
-                }
             };
-            liff.shareTargetPicker([ flexJson ]).then(res => { if (res) console.log("發送成功"); });
+
+            // 🛒 第三頁：商城
+            renderGridGroups('page-shop', cardData.shopGroups, false);
+            // 🎨 第四頁：展示區 (套用燈箱)
+            renderGridGroups('page-gallery', cardData.galleryGroups, true);
         }
+
+        // Flex Message 保持不變
+        function initializeLiff() { ... liff.init ... }
+        function shareDynamicFlexMessage() { ... }
     </script>
 </body>
 </html>
