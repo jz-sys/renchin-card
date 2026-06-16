@@ -1,38 +1,42 @@
 {
   "images": {
-    "backgroundUrl": "https://placehold.co/600x800/FFD1DC/3f3f46?text=Background",
-    "avatarUrl": "https://placehold.co/400x400/FFE4B5/3f3f46?text=Avatar",
-    "avatarFrameUrl": ""
+    "backgroundUrl": "https://jz-sys.github.io/renchin-card/base/bg.png",
+    "avatarUrl": "https://jz-sys.github.io/renchin-card/base/avatar.png",
+    "avatarFrameUrl": "https://jz-sys.github.io/renchin-card/base/avatarframe.png"
   },
   "profile": {
-    "name": "不想上班的創作者",
-    "title": "厭世系 / 數位貼圖設計",
-    "bio": "這是我逼不得已才做的名片，裡面有一些沒什麼用的連結，隨便逛逛吧。"
+    "name": "厭世小遜咖",
+    "title": "硬體裝修 / 軟體設計規劃",
+    "bio": "裡面都是沒啥用的東西，隨便逛逛，路過看看。"
   },
   "links": [
     {
-      "customIcon": "https://placehold.co/100x100/transparent/3f3f46?text=IG",
-      "title": "追蹤我的 IG (幾乎沒發文)",
-      "url": "https://instagram.com"
+      "customIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Coffee",
+      "title": "加好友 點擊這裡",
+      "url": "https://line.me/ti/p/wtBGSSR5-A"
+    },
+    {
+      "customIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Coffee",
+      "title": "金の屋 到此一遊",
+      "url": "https://line.me/R/oaMessage/@362upynu/?哈囉!!到此一遊🐾"
     }
   ],
   "buttons": {
-    "htmlShareBtn": "寄出邀請給朋友",
     "htmlShareBtnIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
-    "htmlCloseBtn": "閉嘴不看了",
-    "htmlCloseBtnIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Close",
-    "flexOpenBtn": "點開看一下",
+    "htmlShareBtn": "分享給朋友",
+    "htmlCloseBtnIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "htmlCloseBtn": "慢走不送",
+    "flexOpenBtn": "都給了不看嗎",
     "tabProfile": "關於我",
-    "tabProfileIcon": "https://placehold.co/100x100/transparent/3f3f46?text=👤",
+    "tabProfileIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
     "tabNews": "最新動態",
-    "tabNewsIcon": "https://placehold.co/100x100/transparent/3f3f46?text=📰",
+    "tabNewsIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
     "tabShop": "商城/連結",
-    "tabShopIcon": "https://placehold.co/100x100/transparent/3f3f46?text=🛒",
+    "tabShopIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
     "tabGallery": "純展示區",
-    "tabGalleryIcon": "https://placehold.co/100x100/transparent/3f3f46?text=🎨"
+    "tabGalleryIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share"
   },
-  "footerText": "© 2026 版權所有 | Designed by 不想上班的創作者",
-  
+  "footerText": "© 2026 版權所有 | Designed by 厭世遜咖",
   "newsItems": [
     {
       "imageUrl": "https://placehold.co/600x300/FFE4B5/3f3f46?text=News+1",
@@ -45,42 +49,95 @@
       "desc": "這是一組極度敷衍的貼圖，專門用來對付老闆跟不想回的群組訊息。畫這組貼圖的時候我真的超想睡覺，所以線條有點抖是正常的。"
     }
   ],
-
-  "shopGroups": [
+  "portfolioGroups": [
     {
-      "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Buy",
-      "sectionTitle": "實體商品 (點擊購買)",
-      "items": [
+      "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Cart",
+      "sectionTitle": "LINE貼圖創作購物區",
+      "shopGroups": [
         {
-          "url": "https://store.line.me/",
-          "imageUrl": "https://placehold.co/400x400/FFD1DC/3f3f46?text=Mug",
-          "title": "社畜專用馬克杯",
-          "desc": "NT$ 350"
+          "type": "link",
+          "url": "https://store.line.me/stickershop/product/32887758/zh-Hant?from=sticker",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/sticker/ow_bao.png",
+          "title": "嗷寶日常",
+          "desc": "NT$ 60 / 天天玩腳色"
         },
         {
-          "url": "https://store.line.me/",
-          "imageUrl": "https://placehold.co/400x400/E9D5FF/3f3f46?text=Sticker",
-          "title": "不想上班防水貼紙",
-          "desc": "NT$ 120"
+          "type": "link",
+          "url": "https://store.line.me/stickershop/product/33319911/zh-Hant?from=sticker",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/sticker/loser_life.png",
+          "title": "遜咖人生",
+          "desc": "NT$ 30 / 廢咖日常心情"
+        },
+        {
+          "type": "link",
+          "url": "https://store.line.me/stickershop/product/32904073/zh-Hant?from=sticker",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/sticker/a_pei.png",
+          "title": "啊配配日記",
+          "desc": "NT$ 30 / 互動日常對話"
         }
       ]
     }
   ],
-
   "galleryGroups": [
     {
-      "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Art",
-      "sectionTitle": "插畫作品 (點擊放大)",
+      "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Cart",
+      "sectionTitle": "楓之谷世界創作展示區",
       "items": [
         {
-          "imageUrl": "https://placehold.co/600x800/D1FAE5/3f3f46?text=Art+1",
-          "title": "眼神死自畫像",
-          "desc": "2026 / 壓克力顏料"
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/mapleworld/01.png",
+          "title": "蒼瀾龍裔",
+          "desc": "楓之谷造型搭配"
         },
         {
-          "imageUrl": "https://placehold.co/800x600/FFE4B5/3f3f46?text=Art+2",
-          "title": "老闆的凝視",
-          "desc": "2025 / 電繪"
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/mapleworld/02.png",
+          "title": "熾魔墨魂",
+          "desc": "楓之谷造型搭配"
+        },
+        {
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/mapleworld/03.png",
+          "title": "幻雪九尾",
+          "desc": "楓之谷造型搭配"
+        },
+        {
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/mapleworld/04.png",
+          "title": "白羽天狼",
+          "desc": "楓之谷造型搭配"
+        },
+        {
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/mapleworld/05.png",
+          "title": "漆黑末日",
+          "desc": "楓之谷造型搭配"
+        },
+        {
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/mapleworld/06.png",
+          "title": "天眼狙擊",
+          "desc": "楓之谷造型搭配"
+        },
+        {
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/mapleworld/07.png",
+          "title": "雙生界線",
+          "desc": "楓之谷造型搭配"
+        },
+        {
+          "type": "image",
+          "url": "",
+          "imageUrl": "https://jz-sys.github.io/renchin-card/mapleworld/08.png",
+          "title": "闇夜御獸",
+          "desc": "楓之谷造型搭配"
         }
       ]
     }
