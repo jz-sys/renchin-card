@@ -1,8 +1,8 @@
 {
   "images": {
-    "backgroundUrl": "https://jz-sys.github.io/renchin-card/base/bg.png",
-    "avatarUrl": "https://jz-sys.github.io/renchin-card/base/avatar.png",
-    "avatarFrameUrl": "https://jz-sys.github.io/renchin-card/base/avatarframe.png"
+    "backgroundUrl": "https://jz-sys.github.io/renchin-card/images/base/bg.png",
+    "avatarUrl": "https://jz-sys.github.io/renchin-card/images/base/avatar.png",
+    "avatarFrameUrl": "https://jz-sys.github.io/renchin-card/images/base/avatarframe.png"
   },
   "profile": {
     "name": "厭世小遜咖",
@@ -11,30 +11,30 @@
   },
   "links": [
     {
-      "customIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Coffee",
+      "customIcon": "https://jz-sys.github.io/renchin-card/images/icon/item002.png",
       "title": "加好友 點擊這裡",
       "url": "https://line.me/ti/p/wtBGSSR5-A"
     },
     {
-      "customIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Coffee",
+      "customIcon": "https://jz-sys.github.io/renchin-card/images/icon/item001.png",
       "title": "金の屋 到此一遊",
       "url": "https://line.me/R/oaMessage/@362upynu/?哈囉!!到此一遊🐾"
     }
   ],
   "buttons": {
-    "htmlShareBtnIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "htmlShareBtnIcon": "https://jz-sys.github.io/renchin-card/images/icon/item002.png",
     "htmlShareBtn": "分享給朋友",
-    "htmlCloseBtnIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "htmlCloseBtnIcon": "https://jz-sys.github.io/renchin-card/images/icon/item001.png",
     "htmlCloseBtn": "慢走不送",
     "flexOpenBtn": "都給了不看嗎",
     "tabProfile": "關於我",
-    "tabProfileIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "tabProfileIcon": "https://jz-sys.github.io/renchin-card/images/icon/item001.png",
     "tabNews": "最新動態",
-    "tabNewsIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "tabNewsIcon": "https://jz-sys.github.io/renchin-card/images/icon/item001.png",
     "tabShop": "商城/連結",
-    "tabShopIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "tabShopIcon": "https://jz-sys.github.io/renchin-card/images/icon/item001.png",
     "tabGallery": "純展示區",
-    "tabGalleryIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share"
+    "tabGalleryIcon": "https://jz-sys.github.io/renchin-card/images/icon/item001.png"
   },
   "footerText": "© 2026 版權所有 | Designed by 厭世遜咖",
   "newsItems": [
@@ -56,7 +56,7 @@
   ],
   "shopGroups": [
     {
-      "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Cart",
+      "sectionIcon": "https://jz-sys.github.io/renchin-card/images/icon/item002.png",
       "sectionTitle": "LINE貼圖創作購物區",
       "items": [
         {
@@ -85,7 +85,7 @@
   ],
   "galleryGroups": [
     {
-      "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Cart",
+      "sectionIcon": "https://jz-sys.github.io/renchin-card/images/icon/item003.png",
       "sectionTitle": "楓之谷世界創作展示區",
       "items": [
         {
