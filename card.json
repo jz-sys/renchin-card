@@ -27,17 +27,33 @@
     "htmlCloseBtnIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
     "htmlCloseBtn": "慢走不送",
     "flexOpenBtn": "都給了不看嗎",
-    "tabProfileIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
     "tabProfile": "關於我",
-    "tabProductsIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
-    "tabProducts": "作品集"
+    "tabProfileIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "tabNews": "最新動態",
+    "tabNewsIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "tabShop": "商城/連結",
+    "tabShopIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share",
+    "tabGallery": "純展示區",
+    "tabGalleryIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Share"
   },
   "footerText": "© 2026 版權所有 | Designed by 厭世遜咖",
+  "newsItems": [
+    {
+      "imageUrl": "https://placehold.co/600x300/FFE4B5/3f3f46?text=News+1",
+      "title": "2026 台北文博會參展預告",
+      "desc": "這次我們會在花博爭艷館擺攤喔！現場會有超多限定的厭世新品，還有只送不賣的神祕小貼紙。記得來找我玩，不然我會很無聊。\n展期：8/15 - 8/18\n地點：圓山爭艷館 D25 攤位"
+    },
+    {
+      "imageUrl": "https://placehold.co/600x300/D1FAE5/3f3f46?text=News+2",
+      "title": "第二彈 LINE 貼圖上架啦",
+      "desc": "這是一組極度敷衍的貼圖，專門用來對付老闆跟不想回的群組訊息。畫這組貼圖的時候我真的超想睡覺，所以線條有點抖是正常的。"
+    }
+  ],
   "portfolioGroups": [
     {
       "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Cart",
       "sectionTitle": "LINE貼圖創作購物區",
-      "items": [
+      "shopGroups": [
         {
           "type": "link",
           "url": "https://store.line.me/stickershop/product/32887758/zh-Hant?from=sticker",
@@ -60,7 +76,9 @@
           "desc": "NT$ 30 / 互動日常對話"
         }
       ]
-    },
+    }
+  ],
+  "galleryGroups": [
     {
       "sectionIcon": "https://placehold.co/100x100/transparent/3f3f46?text=Cart",
       "sectionTitle": "楓之谷世界創作展示區",
