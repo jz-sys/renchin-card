@@ -266,9 +266,46 @@
             renderGridGroups('page-gallery', cardData.galleryGroups, true);
         }
 
-        // Flex Message 保持不變
-        function initializeLiff() { ... liff.init ... }
-        function shareDynamicFlexMessage() { ... }
+// 💡 將最下方的這兩個函式完整補回即可
+        function initializeLiff() {
+            liff.init({ liffId: MY_LIFF_ID }).then(() => {
+                if (!liff.isLoggedIn()) liff.login();
+                document.getElementById('btn-share').onclick = function() {
+                    if (liff.isApiAvailable('shareTargetPicker')) shareDynamicFlexMessage();
+                };
+                document.getElementById('btn-close').onclick = function() {
+                    if (liff.isInClient()) liff.closeWindow();
+                };
+            }).catch(err => {
+                console.error('LIFF 初始化失敗', err);
+            });
+        }
+
+        function shareDynamicFlexMessage() {
+            const flexJson = {
+                "type": "flex", "altText": `收到來自 ${cardData.profile.name} 的名片`,
+                "contents": {
+                    "type": "bubble", "size": "mega",
+                    "body": {
+                        "type": "box", "layout": "vertical", "paddingAll": "0px",
+                        "contents": [
+                            { "type": "image", "url": cardData.images.backgroundUrl, "size": "full", "aspectMode": "cover", "aspectRatio": "3:4" },
+                            {
+                                "type": "box", "layout": "vertical", "position": "absolute", "width": "100%", "height": "100%", "backgroundColor": "#FFFDF7DD", "paddingAll": "25px", "alignItems": "center",
+                                "contents": [
+                                    { "type": "image", "url": cardData.images.avatarUrl, "size": "xl", "aspectMode": "cover", "margin": "xl" },
+                                    { "type": "text", "text": cardData.profile.name, "weight": "bold", "size": "xl", "color": "#3f3f46", "margin": "xl" },
+                                    { "type": "text", "text": cardData.profile.title, "size": "sm", "color": "#FF6B6B", "weight": "bold", "margin": "sm" },
+                                    { "type": "text", "text": cardData.profile.bio, "size": "sm", "color": "#71717a", "wrap": true, "margin": "xl", "align": "center" },
+                                    { "type": "box", "layout": "vertical", "margin": "xxl", "contents": [ { "type": "button", "style": "primary", "color": "#3f3f46", "action": { "type": "uri", "label": cardData.buttons.flexOpenBtn, "uri": MY_LIFF_URL } } ] }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            };
+            liff.shareTargetPicker([ flexJson ]).then(res => { if (res) console.log("發送成功"); });
+        }
     </script>
 </body>
 </html>
