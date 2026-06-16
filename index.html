@@ -85,7 +85,7 @@
         let cardData = {};
 
         window.onload = function() {
-            fetch('card.json')
+            fetch('https://jz-sys.github.io/renchin-card/card.json')
                 .then(res => res.json())
                 .then(data => { cardData = data; renderHtmlCard(); initializeLiff(); })
                 .catch(err => document.getElementById('render-bio').innerText = "載入失敗，請確認 JSON");
